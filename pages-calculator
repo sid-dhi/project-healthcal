@@ -1,0 +1,103 @@
+import React, { useState } from "react";
+import { CalorieCalculation } from "@/entities/CalorieCalculation";
+import { InvokeLLM } from "@/integrations/Core";
+import { motion } from "framer-motion";
+
+import CalorieForm from "../components/CalorieForm";
+import ResultsDisplay from "../components/ResultsDisplay";
+
+export default function Calculator() {
+  const [result, setResult] = useState(null);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [currentFormData, setCurrentFormData] = useState(null);
+
+  const calculateCalories = async (formData) => {
+    setIsCalculating(true);
+    setCurrentFormData(formData);
+
+    try {
+      const weight = parseFloat(formData.weight);
+      const height = parseFloat(formData.height);
+      
+      const prompt = `Calculate accurate calories burned for a person with these details:
+      - Weight: ${weight} kg
+      - Height: ${height} cm  
+      - Age: ${formData.age} years
+      - Gender: ${formData.gender}
+      - Exercise: ${formData.exercise_type}
+      - Duration: ${formData.exercise_duration} minutes
+      
+      Please calculate:
+      1. Base Metabolic Rate (BMR) using Mifflin-St Jeor equation
+      2. Activity-specific calories burned using METs (Metabolic Equivalent of Task)
+      3. Activity multiplier based on exercise intensity
+      
+      Be scientifically accurate and consider the specific exercise type for MET values.`;
+
+      const aiResult = await InvokeLLM({
+        prompt,
+        response_json_schema: {
+          type: "object",
+          properties: {
+            calories_burned: {
+              type: "number",
+              description: "Total calories burned during exercise"
+            },
+            bmr: {
+              type: "number", 
+              description: "Base metabolic rate in calories per day"
+            },
+            activity_multiplier: {
+              type: "number",
+              description: "MET value or intensity multiplier used"
+            },
+            explanation: {
+              type: "string",
+              description: "Brief explanation of the calculation"
+            }
+          }
+        }
+      });
+
+      setResult(aiResult);
+    } catch (error) {
+      console.error("Error calculating calories:", error);
+    } finally {
+      setIsCalculating(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Hero Section */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center mb-12"
+        >
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent mb-4">
+            HealthCal AI
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Get precise calorie calculations powered by artificial intelligence. 
+            Input your details and let our AI analyze your exercise for accurate results.
+          </p>
+        </motion.div>
+
+        <div className="max-w-2xl mx-auto">
+          {/* Main Calculator */}
+          <CalorieForm 
+            onCalculate={calculateCalories}
+            isCalculating={isCalculating}
+          />
+          
+          <ResultsDisplay 
+            result={result}
+            formData={currentFormData}
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
