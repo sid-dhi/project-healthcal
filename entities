@@ -1,0 +1,54 @@
+{
+  "name": "CalorieCalculation",
+  "type": "object",
+  "properties": {
+    "weight": {
+      "type": "number",
+      "description": "Weight in kg"
+    },
+    "height": {
+      "type": "number",
+      "description": "Height in cm"
+    },
+    "age": {
+      "type": "number",
+      "description": "Age in years"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female",
+        "other"
+      ],
+      "description": "Gender"
+    },
+    "exercise_duration": {
+      "type": "number",
+      "description": "Exercise duration in minutes"
+    },
+    "exercise_type": {
+      "type": "string",
+      "description": "Type of exercise performed"
+    },
+    "calories_burned": {
+      "type": "number",
+      "description": "Calculated calories burned"
+    },
+    "bmr": {
+      "type": "number",
+      "description": "Base metabolic rate"
+    },
+    "activity_multiplier": {
+      "type": "number",
+      "description": "Activity level multiplier used"
+    }
+  },
+  "required": [
+    "weight",
+    "height",
+    "age",
+    "gender",
+    "exercise_duration"
+  ]
+}
