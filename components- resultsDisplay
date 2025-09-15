@@ -1,0 +1,131 @@
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Flame, Activity, Heart, TrendingUp, Zap, Target } from "lucide-react";
+import { motion } from "framer-motion";
+
+export default function ResultsDisplay({ result, formData }) {
+  if (!result) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className="space-y-6 mt-8"
+    >
+      {/* Main Result Card */}
+      <Card className="bg-gradient-to-br from-orange-50 to-red-50 border-orange-200 shadow-xl">
+        <CardHeader className="text-center pb-4">
+          <CardTitle className="text-2xl font-bold text-gray-800 flex items-center justify-center gap-2">
+            <Flame className="w-7 h-7 text-orange-500" />
+            Calories Burned
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="text-center">
+          <div className="text-5xl font-bold text-orange-600 mb-2">
+            {Math.round(result.calories_burned)}
+          </div>
+          <div className="text-lg text-gray-600 mb-4">calories</div>
+          <Badge className="bg-orange-100 text-orange-700 px-4 py-1">
+            {formData.exercise_duration} minutes of {formData.exercise_type}
+          </Badge>
+        </CardContent>
+      </Card>
+
+      {/* Detailed Metrics */}
+      <div className="grid md:grid-cols-3 gap-4">
+        <Card className="bg-blue-50 border-blue-200">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-blue-700 flex items-center gap-2">
+              <Heart className="w-4 h-4" />
+              Base Metabolic Rate
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-blue-600">
+              {Math.round(result.bmr)}
+            </div>
+            <p className="text-xs text-blue-600">calories/day</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-green-50 border-green-200">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-green-700 flex items-center gap-2">
+              <Activity className="w-4 h-4" />
+              Activity Multiplier
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-600">
+              {result.activity_multiplier?.toFixed(1)}x
+            </div>
+            <p className="text-xs text-green-600">intensity factor</p>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-purple-50 border-purple-200">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-purple-700 flex items-center gap-2">
+              <Zap className="w-4 h-4" />
+              Rate per Minute
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-purple-600">
+              {Math.round(result.calories_burned / formData.exercise_duration)}
+            </div>
+            <p className="text-xs text-purple-600">cal/min</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Exercise Summary */}
+      <Card className="bg-white/70 backdrop-blur-sm border-gray-200">
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+            <Target className="w-5 h-5 text-blue-500" />
+            Calculation Summary
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-4 text-sm">
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Weight:</span>
+                <span className="font-medium">
+                  {formData.weight} kg
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Height:</span>
+                <span className="font-medium">
+                  {formData.height} cm
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Age:</span>
+                <span className="font-medium">{formData.age} years</span>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Gender:</span>
+                <span className="font-medium capitalize">{formData.gender}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Exercise:</span>
+                <span className="font-medium">{formData.exercise_type}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Duration:</span>
+                <span className="font-medium">{formData.exercise_duration} min</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
