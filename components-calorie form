@@ -1,0 +1,175 @@
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { User, Weight, Ruler, Calendar, Clock, Dumbbell, Calculator } from "lucide-react";
+import { motion } from "framer-motion";
+
+export default function CalorieForm({ onCalculate, isCalculating }) {
+  const [formData, setFormData] = useState({
+    weight: "",
+    height: "",
+    age: "",
+    gender: "",
+    exercise_duration: "",
+    exercise_type: ""
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onCalculate(formData);
+  };
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className="bg-white/70 backdrop-blur-sm border-blue-200 shadow-xl">
+        <CardHeader className="text-center pb-6">
+          <CardTitle className="text-2xl font-bold text-gray-800 flex items-center justify-center gap-2">
+            <Calculator className="w-6 h-6 text-blue-500" />
+            Calculate Your Calories
+          </CardTitle>
+          <p className="text-gray-600 mt-2">Enter your details for AI-powered calorie analysis</p>
+        </CardHeader>
+        
+        <CardContent className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+
+            {/* Personal Information */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-gray-700">
+                  <Weight className="w-4 h-4 text-blue-500" />
+                  Weight (kg)
+                </Label>
+                <Input
+                  type="number"
+                  value={formData.weight}
+                  onChange={(e) => handleInputChange("weight", e.target.value)}
+                  placeholder="70"
+                  className="border-blue-200 focus:border-blue-400"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-gray-700">
+                  <Ruler className="w-4 h-4 text-blue-500" />
+                  Height (cm)
+                </Label>
+                <Input
+                  type="number"
+                  value={formData.height}
+                  onChange={(e) => handleInputChange("height", e.target.value)}
+                  placeholder="175"
+                  className="border-blue-200 focus:border-blue-400"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-gray-700">
+                  <Calendar className="w-4 h-4 text-blue-500" />
+                  Age (years)
+                </Label>
+                <Input
+                  type="number"
+                  value={formData.age}
+                  onChange={(e) => handleInputChange("age", e.target.value)}
+                  placeholder="30"
+                  className="border-blue-200 focus:border-blue-400"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label className="flex items-center gap-2 text-gray-700">
+                  <User className="w-4 h-4 text-blue-500" />
+                  Gender
+                </Label>
+                <Select value={formData.gender} onValueChange={(value) => handleInputChange("gender", value)} required>
+                  <SelectTrigger className="border-blue-200 focus:border-blue-400">
+                    <SelectValue placeholder="Select gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {/* Exercise Information */}
+            <div className="space-y-4 bg-gradient-to-r from-blue-50 to-green-50 p-4 rounded-lg border border-blue-100">
+              <h3 className="font-semibold text-gray-800 flex items-center gap-2">
+                <Dumbbell className="w-5 h-5 text-green-500" />
+                Exercise Details
+              </h3>
+              
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2 text-gray-700">
+                    <Clock className="w-4 h-4 text-green-500" />
+                    Duration (minutes)
+                  </Label>
+                  <Input
+                    type="number"
+                    value={formData.exercise_duration}
+                    onChange={(e) => handleInputChange("exercise_duration", e.target.value)}
+                    placeholder="30"
+                    className="border-blue-200 focus:border-blue-400"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="text-gray-700">Exercise Type</Label>
+                  <Textarea
+                    value={formData.exercise_type}
+                    onChange={(e) => handleInputChange("exercise_type", e.target.value)}
+                    placeholder="e.g., Running, Swimming, Weight training..."
+                    className="border-blue-200 focus:border-blue-400 h-20"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <Button
+              type="submit"
+              disabled={isCalculating}
+              className="w-full bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white py-3 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+            >
+              {isCalculating ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  AI Calculating...
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Calculator className="w-5 h-5" />
+                  Calculate Calories with AI
+                </div>
+              )}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
