@@ -12,8 +12,8 @@ Whether you're tracking fitness progress, managing dietary goals, or just stayin
 
 -------------------------------------------------------------------------------------------------
 🚀 Features
-
-📊 Health Metrics Calculator
+---
+📊 Health Metrics Calculator:
 
 -BMI (Body Mass Index) – Know your body mass category.
 
@@ -31,7 +31,7 @@ Whether you're tracking fitness progress, managing dietary goals, or just stayin
 
 ------------------------------------------------------------------------------------------------------
 🎨 User-Friendly Design
-
+---
 -Clean, modern interface with a health-themed color palette
 -Interactive sliders & inputs for real-time calculation
 -Visual charts for progress tracking
