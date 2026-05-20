@@ -7,6 +7,7 @@ A smart, intuitive tool to calculate and track key health metrics — because yo
 ✨ Why HealthCal?
 
 HealthCal helps you understand your body better by calculating essential health and fitness metrics in seconds.
+
 Whether you're tracking fitness progress, managing dietary goals, or just staying informed, HealthCal makes it simple, accurate, and visually engaging.
 
 -------------------------------------------------------------------------------------------------
