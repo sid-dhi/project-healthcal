@@ -33,6 +33,9 @@ Whether you're tracking fitness progress, managing dietary goals, or just stayin
 🎨 User-Friendly Design
 ---
 -Clean, modern interface with a health-themed color palette
+
 -Interactive sliders & inputs for real-time calculation
+
 -Visual charts for progress tracking
+
 -Fully responsive — works on mobile, tablet, and desktop
